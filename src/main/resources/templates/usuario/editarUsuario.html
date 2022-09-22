@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang = "pt - br">
+    <head>
+        <meta charset = "UTF-8">
+        <meta name = "viewport" content = "width = device-width", initial-scale = 1.0>
+        <meta http-equiv = "X-UA-Compatible" content = "ie = edge">
+        <title>Login</title>
+        <link rel="stylesheet" href = "style/StyleCss.css">
+
+    </head>
+
+    <body>
+         <div class = "container">
+            <div class = "content first-content" >
+                
+                <div class="primeira-coluna">
+                    <h2 class = "title"> você voltou! </h2>
+                    <p class="description">obrigado pelo carinho</p>
+                    <p class="description">faça seu login para voltar à sua procura profissional</p>
+                    <button class="btm">entrar</button>
+                </div>
+
+                <div class="segunda-coluna">
+                    <h2 class = "title"> criar conta </h2>
+                        <div class = "social-media">
+                            <ul class="list-social-media">
+                                <li><a href="#">facebook</a></li>
+                                <li><a href="#">linkedin</a></li>
+                                <li><a href="#">google account</a></li>
+                            </ul>
+                        </div>
+                        <p class="description">ou utilize o seu email para o registro</p>
+                        <form action = "cadastrarUsuario" class = "form" method = "post">
+                           Nome: <input type = "text" name = "nomeCompleto">
+                           Email: <input type = "email" name = "email">
+                           Data Nascimento:<input type = "date" value=""  name="dataNascimento"/>
+                           Senha: <input type = "password" name = "senha">
+                            <button class = "btn" type = "submit">criar conta</button>
+                        </form>
+                    
+                </div><!-- fim segunda coluna --> 
+
+            </div> <!-- fim primeira pagina --> 
+
+            <div class = "content second-content" >
+                
+                <div class="primeira-coluna">
+                    <h2 class = "title"> seja bem vindo! </h2>
+                    <p class="description">insira seus dados pessoais</p>
+                    <p class="description">e inicie sua jornada conosco</p>
+                    <button class="btm">criar conta</button>
+                </div>
+                
+                <div class="segunda-coluna">
+                    <h2 class = "title">entrar na sua conta FindMe</h2>
+                    <div class = "social-media">
+                        <ul class="ul">
+                            <li><a href="#">facebook</a></li>
+                            <li><a href="#">linkedin</a></li>
+                            <li><a href="#">google account</a></li>
+                        </ul>
+                    </div>
+                    <p class="description">ou utilize o seu email</p>
+                    <form class = "form">
+                        <input type = "email" placeholder = "Email">
+                        <input type = "password" placeholder = "Senha">
+                        <a href="#">esqueceu sua senha?</a> <!-- esqueceu sua senha - adicionar link ou pagina -->
+                        <button clas = "btn">entrar</button>
+                    </form>
+                
+                </div><!-- fim segunda coluna --> 
+        </div> <!-- fim primeira pagina --> 
+            
+
+         </div>
+    </body>
+
+
+
+</html>
