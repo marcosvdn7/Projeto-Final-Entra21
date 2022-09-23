@@ -1,12 +1,19 @@
 package com.entra21.findmeajob.models;
 
 import java.sql.Date;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 public class Usuario {
@@ -29,7 +36,10 @@ public class Usuario {
 	private String senha;
 	
 	@Column(name = "DATA_CADASTRO")
-	private Date dataCadastro;
+	private Instant dataCadastro;
+	
+	@OneToMany(mappedBy = "usuario")
+	private List<Post> posts = new ArrayList<>();
 	
 	public Usuario() {
 	}
@@ -74,11 +84,11 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public Date getDataCadastro() {
+	public Instant getDataCadastro() {
 		return dataCadastro;
 	}
 
-	public void setDataCadastro(Date dataCadastro) {
+	public void setDataCadastro(Instant dataCadastro) {
 		this.dataCadastro = dataCadastro;
 	}
 
