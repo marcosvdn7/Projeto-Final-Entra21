@@ -12,8 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.entra21.findmeajob.models.enums.PermissaoUsuario;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 
 @Entity
 public class Usuario {
@@ -22,26 +22,31 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "USER_ID")
 	private Integer userId;
-	
+
 	@Column(name = "NOME_COMPLETO")
 	private String nomeCompleto;
-	
+
 	@Column(name = "EMAIL")
 	private String email;
-	
+
 	@Column(name = "DATA_NASCIMENTO")
 	private Date dataNascimento;
-	
+
 	@Column(name = "SENHA")
 	private String senha;
-	
+
 	@Column(name = "DATA_CADASTRO")
 	private Instant dataCadastro;
-	
+
+	@Column(name = "PERMISSAO_USUARIO")
+	private Integer permissaoUsuario;
+
+	@JsonIgnore
 	@OneToMany(mappedBy = "usuario")
 	private List<Post> posts = new ArrayList<>();
-	
+
 	public Usuario() {
+		this.permissaoUsuario = 1;
 	}
 
 	public Integer getUserId() {
@@ -92,11 +97,24 @@ public class Usuario {
 		this.dataCadastro = dataCadastro;
 	}
 
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public PermissaoUsuario getPermissaoUsuario() {
+		return PermissaoUsuario.valueOf(this.permissaoUsuario);
+	}
+
+	public void setPermissaoUsuario(PermissaoUsuario permissaoUsuario) {
+		if (permissaoUsuario != null) {
+			this.permissaoUsuario = permissaoUsuario.getCodigo();
+		}
+	}
+
 	@Override
 	public String toString() {
 		return "Usuario [userId=" + userId + ", nomeCompleto=" + nomeCompleto + ", email=" + email + ", dataNascimento="
 				+ dataNascimento + ", senha=" + senha + ", dataCadastro=" + dataCadastro + "]";
 	}
 
-	
 }

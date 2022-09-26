@@ -20,17 +20,17 @@ public class PostController {
 	public PostService ps;
 	
 	//REDIRECIONA PARA A PAGINA DE PUBLICAÇÂO DE POST
-	@GetMapping(value = "/{id}/publicarPost")
-	public String publicarPost(@PathVariable Integer id) {
+	@GetMapping(value = "/{idUsuario}/publicarPost")
+	public String publicarPost(@PathVariable Integer idUsuario) {
 		return "post/publicarPost";
 	}
 	
 	//FAZ A PUBLICAÇÂO
-	@PostMapping(value = "/{id}/publicarPost")
-	public String criarPublicacao(Post post, @PathVariable Integer id) {
-		ps.publicar(post, id);
+	@PostMapping(value = "/{idUsuario}/publicarPost")
+	public String criarPublicacao(Post post, @PathVariable Integer idUsuario, Long idCategoria) {
+		ps.publicar(post, idUsuario, idCategoria);
 		
-		return "redirect:/" +id+ "/publicarPost";
+		return "redirect:/" +idUsuario+ "/publicarPost";
 	}
 	
 	//MOSTRA UMA LISTA COM TODAS AS PUBLICAÇÕES CADASTRADAS
@@ -58,18 +58,18 @@ public class PostController {
 		return ResponseEntity.ok().body(post);
 	}
 	
-	@GetMapping(value = "/editarPublicacao/{id}")
-	public ModelAndView editarPublicacao(@PathVariable Long id) {
+	@GetMapping(value = "/editarPublicacao/{idUser}/{idPost}")
+	public ModelAndView editarPublicacao(@PathVariable Integer idUser, @PathVariable Long idPost, Post post) {
 		ModelAndView mv = new ModelAndView("post/editarPublicacao");
-		Post post = ps.findById(id);
+		post = ps.findById(idPost);
 		mv.addObject("post", post);
 		
 		return mv;
 		}
 	
-	@PostMapping(value = "/editarPublicacao/{id}")
-	public String editarPublicacao(@PathVariable Long id, Post post) {
-		ps.editar(id, post);
+	@PostMapping(value = "/editarPublicacao/{idUser}/{idPost}")
+	public String editarPublicacaoPost(@PathVariable Integer idUser, @PathVariable Long idPost, Post post) {
+		ps.editar(idPost, idUser, post);
 		return "redirect:/listaPosts";
 	}
 }

@@ -1,6 +1,8 @@
 package com.entra21.findmeajob.models;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 
@@ -31,6 +35,12 @@ public class Post {
 	@ManyToOne
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
+	
+	@ManyToMany
+	@JoinTable(name = "post_categoria",
+			   joinColumns = @JoinColumn(name = "id_post"),
+			   inverseJoinColumns = @JoinColumn(name = "id_categoria"))
+	private List<Categoria> categorias = new ArrayList<>();
 	
 	public Post() {
 		
@@ -74,6 +84,10 @@ public class Post {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public List<Categoria> getCategorias() {
+		return categorias;
 	}
 
 	@Override

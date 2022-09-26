@@ -49,6 +49,7 @@ public class UsuarioService {
 	public Usuario editar(Integer id, Usuario usuarioEditado) {
 		Optional<Usuario> optUsuario = ur.findById(id);
 		atualizarDados(optUsuario.get(), usuarioEditado);
+		
 		return ur.save(optUsuario.get());
 	}
 
@@ -56,6 +57,5 @@ public class UsuarioService {
 		usuario.setNomeCompleto(usuarioEditado.getNomeCompleto());
 		usuario.setEmail(usuarioEditado.getEmail());
 		usuario.setDataNascimento(usuarioEditado.getDataNascimento());
-		usuario.setDataCadastro(usuarioEditado.getDataCadastro());
-	}
+		usuario.setSenha(usuarioEditado.getSenha());}
 }

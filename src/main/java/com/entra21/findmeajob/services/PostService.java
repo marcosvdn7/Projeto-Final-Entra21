@@ -7,8 +7,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.entra21.findmeajob.models.Categoria;
 import com.entra21.findmeajob.models.Post;
 import com.entra21.findmeajob.models.Usuario;
+import com.entra21.findmeajob.repository.CategoriaRepository;
 import com.entra21.findmeajob.repository.PostRepository;
 import com.entra21.findmeajob.repository.UsuarioRepository;
 
@@ -21,10 +23,15 @@ public class PostService {
 	@Autowired
 	private UsuarioRepository ur;
 	
-	public void publicar(Post post, Integer id) {
+	@Autowired
+	private CategoriaRepository cr;
+	
+	public void publicar(Post post, Integer idPublicacao, Long idCategoria) {
+		Optional<Categoria> obj = cr.findById(idCategoria);
+		Optional<Usuario> user = ur.findById(idPublicacao);
 		post.setDataPublicacao(Instant.now());
-		Optional<Usuario> user = ur.findById(id);
 		post.setUsuario(user.get());
+		post.getCategorias().add(obj.get());
 		pr.save(post);
 	}
 	
@@ -40,19 +47,23 @@ public class PostService {
 	
 	public void deletar(Long postId) {
 		Optional<Post> post = pr.findById(postId);
-		pr.delete(post.get());
+		pr.delete(post.get()); 
 	}
 	
-	public Post editar(Long id, Post postEditado) {
-		Optional<Post> optPost = pr.findById(id);
-		atualizarDados(optPost.get(), postEditado);
+	public Post editar(Long idPost, Integer idUsuario, Post postEditado) {
+		Optional<Post> optPost = pr.findById(idPost);
+		atualizarDados(optPost.get(), idUsuario, postEditado);
 		
 		return pr.save(optPost.get());
 	}
 	
-	private void atualizarDados(Post post, Post postEditado) {
+	private void atualizarDados(Post post, Integer idUsuario, Post postEditado) {
 		post.setTitulo(postEditado.getTitulo());
 		post.setConteudo(postEditado.getConteudo());
+		Optional<Usuario> optUsuario = ur.findById(idUsuario);
+		optUsuario.get().getPosts().add(postEditado);
+		post.setUsuario(optUsuario.get());
+		
 	}
 
 }
