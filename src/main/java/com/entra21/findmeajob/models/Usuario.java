@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,7 +27,7 @@ public class Usuario {
 	@Column(name = "NOME_COMPLETO")
 	private String nomeCompleto;
 
-	@Column(name = "EMAIL")
+	@Column(name = "EMAIL", unique = true)
 	private String email;
 
 	@Column(name = "DATA_NASCIMENTO")
@@ -109,6 +110,24 @@ public class Usuario {
 		if (permissaoUsuario != null) {
 			this.permissaoUsuario = permissaoUsuario.getCodigo();
 		}
+	}
+	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(email);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usuario other = (Usuario) obj;
+		return Objects.equals(email, other.email);
 	}
 
 	@Override

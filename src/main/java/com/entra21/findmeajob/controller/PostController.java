@@ -1,5 +1,6 @@
 package com.entra21.findmeajob.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,27 +9,36 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.entra21.findmeajob.models.Categoria;
 import com.entra21.findmeajob.models.Post;
+import com.entra21.findmeajob.repository.CategoriaRepository;
 import com.entra21.findmeajob.services.PostService;
 
 @Controller
 public class PostController {
 	
 	@Autowired
-	public PostService ps;
+	private PostService ps;
+	
+	@Autowired
+	private CategoriaRepository cr;
 	
 	//REDIRECIONA PARA A PAGINA DE PUBLICAÇÂO DE POST
 	@GetMapping(value = "/{idUsuario}/publicarPost")
-	public String publicarPost(@PathVariable Integer idUsuario) {
-		return "post/publicarPost";
+	public ModelAndView publicarPost(@PathVariable Integer idUsuario) {
+		ModelAndView mv = new ModelAndView("post/publicarPost");
+		ArrayList<Categoria> categorias = (ArrayList<Categoria>)cr.findAll();
+		mv.addObject("categorias", categorias);
+		return mv;
 	}
 	
 	//FAZ A PUBLICAÇÂO
 	@PostMapping(value = "/{idUsuario}/publicarPost")
-	public String criarPublicacao(Post post, @PathVariable Integer idUsuario, Long idCategoria) {
-		ps.publicar(post, idUsuario, idCategoria);
+	public String criarPublicacao(Post post, @PathVariable Integer idUsuario,@RequestParam("idCategorias") ArrayList<Long> idCategorias) {
+		ps.publicar(post, idUsuario, idCategorias);
 		
 		return "redirect:/" +idUsuario+ "/publicarPost";
 	}
@@ -36,8 +46,8 @@ public class PostController {
 	//MOSTRA UMA LISTA COM TODAS AS PUBLICAÇÕES CADASTRADAS
 	//NO BANCO DE DADOS
 	@GetMapping(value = "/listaPosts")
-	public ResponseEntity<List<Post>> listaPost() {
-		List<Post> posts = ps.listar();
+	public ResponseEntity<ArrayList<Post>> listaPost() {
+		ArrayList<Post> posts = ps.listar();
 		
 		return ResponseEntity.ok().body(posts);		
 	}
@@ -55,21 +65,32 @@ public class PostController {
 	public ResponseEntity<Post> mostrarPost(@PathVariable Long id){
 		Post post = ps.findById(id);
 		
+		
 		return ResponseEntity.ok().body(post);
 	}
 	
 	@GetMapping(value = "/editarPublicacao/{idUser}/{idPost}")
 	public ModelAndView editarPublicacao(@PathVariable Integer idUser, @PathVariable Long idPost, Post post) {
+		List<Categoria> categorias = cr.findAll();
 		ModelAndView mv = new ModelAndView("post/editarPublicacao");
 		post = ps.findById(idPost);
+		mv.addObject("categorias", categorias);
 		mv.addObject("post", post);
 		
 		return mv;
 		}
 	
 	@PostMapping(value = "/editarPublicacao/{idUser}/{idPost}")
-	public String editarPublicacaoPost(@PathVariable Integer idUser, @PathVariable Long idPost, Post post) {
+	public String editarPost(@PathVariable Integer idUser, @PathVariable Long idPost, Post post) {
 		ps.editar(idPost, idUser, post);
+		
 		return "redirect:/listaPosts";
 	}
+	
+//	@PostMapping(value = "/editarPublicacao/{idUser}/{idPost}")
+//	public String editarPublicacaoPost(@PathVariable Integer idUser, @PathVariable Long idPost, Post post, @RequestParam("idCategorias") ArrayList<Long> idCategorias) {
+//		ps.editar(idPost, idUser, post, idCategorias);
+//		return "redirect:/listaPosts";
+//	}
+	
 }

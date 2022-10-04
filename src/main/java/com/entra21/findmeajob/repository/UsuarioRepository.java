@@ -9,4 +9,5 @@ import com.entra21.findmeajob.models.Usuario;
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
 
 	Optional<Usuario> findById(Integer userId);
+//	Usuario findByUsername(String username);
 }
