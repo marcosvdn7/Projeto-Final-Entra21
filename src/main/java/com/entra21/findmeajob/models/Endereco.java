@@ -1,9 +1,12 @@
 package com.entra21.findmeajob.models;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -16,6 +19,8 @@ public class Endereco {
 	private String rua;
 	private String uf;
 	
+	@OneToMany
+	private List<Usuario> usuarios = new ArrayList<>();
 
 	public Endereco() {
 	}
@@ -57,6 +62,14 @@ public class Endereco {
 
 	public void setUf(String uf) {
 		this.uf = uf;
+	}
+
+	public List<Usuario> getUsuarios() {
+		return usuarios;
+	}
+
+	public void setUsuarios(ArrayList<Usuario> usuarios) {
+		this.usuarios = usuarios;
 	}
 
 	@Override

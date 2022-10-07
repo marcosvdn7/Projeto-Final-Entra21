@@ -81,16 +81,24 @@ public class PostController {
 		}
 	
 	@PostMapping(value = "/editarPublicacao/{idUser}/{idPost}")
-	public String editarPost(@PathVariable Integer idUser, @PathVariable Long idPost, Post post) {
-		ps.editar(idPost, idUser, post);
+	public String editarPost(@PathVariable Integer idUser, @PathVariable Long idPost, Post post, 
+							 @RequestParam("idCategorias") ArrayList<Long> idCategorias) {
+		ps.editar(idPost, idUser, post, idCategorias);
 		
 		return "redirect:/listaPosts";
 	}
 	
-//	@PostMapping(value = "/editarPublicacao/{idUser}/{idPost}")
-//	public String editarPublicacaoPost(@PathVariable Integer idUser, @PathVariable Long idPost, Post post, @RequestParam("idCategorias") ArrayList<Long> idCategorias) {
-//		ps.editar(idPost, idUser, post, idCategorias);
-//		return "redirect:/listaPosts";
-//	}
+	@GetMapping(value = "/posts/{idCategoria}")
+	public ResponseEntity<List<Post>> listarPorCategoria(@PathVariable Long idCategoria) {
+		List<Post> posts = ps.listarPorCategoria(idCategoria);
+		return ResponseEntity.ok().body(posts);
+	}
+	
+	@GetMapping(value = "/perfil/{idUsuario}")
+	public ResponseEntity<List<Post>> postsUsuario(@PathVariable Integer idUsuario){
+		List<Post> posts = ps.listarPorUsuario(idUsuario);
+		
+		return ResponseEntity.ok().body(posts);
+	}
 	
 }
