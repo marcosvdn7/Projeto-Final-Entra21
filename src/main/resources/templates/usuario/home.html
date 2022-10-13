@@ -5,8 +5,8 @@
         
         <meta http-equiv = "X-UA-Compatible" content = "ie = edge">
         <title>Login</title>
-        <link rel="stylesheet" href = "style/css/StyleCss.css">
-        <link rel="stylesheet" href = "fontawesome/css/all.min.css">
+        <link rel="stylesheet" href = "/style/css/StyleCss.css">
+        <link rel="stylesheet" href = "/fontawesome/css/all.min.css">
 
     </head>
 
@@ -35,7 +35,8 @@
                         	</label>
                         	<label class = "label-input" for = "" >
                         		<i class="fa-solid fa-envelope icon-modify"></i>
-                        		<input type = "email" placeholder="Email"  name="email" required>                        	
+                        		<input type = "email" placeholder="Email"  name="email" required>      
+                        		<span class = "mensagem" th:if = "${emailCadastrado}" th:text = "${emailCadastrado}"></span>                  	
                         	</label>
                         	<label class = "label-input" for = "">
                         		<i class="fa-solid fa-key icon-modify"></i>
@@ -65,7 +66,7 @@
                 <div class="segunda-coluna">
                     <h2 class = "title title-secondary">entrar na sua conta FindMe</h2>
                     <p class="description description-secondary">entrando na sua conta!</p>
-                    <form class = "form">
+                    <form class = "form" action = "">
                         
                         	<label class = "label-input" for = "" >
                         		<i class="fa-solid fa-envelope icon-modify"></i>
@@ -86,6 +87,6 @@
             
 
          </div>
-         <script  type="text/javascript" src="style/js/login.js"></script>
+         <script  type="text/javascript" src="/style/js/login.js"></script>
     </body>
 </html>

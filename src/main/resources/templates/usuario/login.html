@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang = "pt - br">
+    <head>
+        <meta charset = "UTF-8">
+        
+        <meta http-equiv = "X-UA-Compatible" content = "ie = edge">
+        <title>Login</title>
+        <link rel="stylesheet" href = "/style/css/StyleCss.css">
+        <link rel="stylesheet" href = "/fontawesome/css/all.min.css">
+
+    </head>
+
+    </head>
+
+    <body>
+            <div class = "content first-content" >
+                
+                <div class="primeira-coluna">
+                    
+                </div>
+                
+                <div class="segunda-coluna">
+                    <h2 class = "title title-secondary">entrar</h2>
+                    <p class="description description-secondary">entrando na sua conta!</p>
+                    <form th:action = "@{/login}" class = "form" method = "post">
+                        
+                        	<label class = "label-input" for = "" >
+                        		<i class="fa-regular fa-envelope icon-modify"></i>
+                        		<input type = "email" placeholder="Email"  name="email">                        	
+                        	</label>
+                        	<label class = "label-input" for = "">
+                        		<i class="fa-regular fa-envelope icon-modify"></i>
+                        		<input type = "password" placeholder="Senha"  name="senha">
+                        	</label>
+                        
+                       <!--  <a href="#">esqueceu sua senha?</a> <!-- esqueceu sua senha - adicionar link ou pagina --> 
+                        
+                        <button class = "btn btn-secondary">entrar</button>
+                    </form>
+                
+                </div><!-- fim segunda coluna --> 
+        </div> <!-- fim primeira pagina --> 
+            
+
+         </div>
+         <script  type="text/javascript" src="js/login.js"></script>
+    </body>
+
+
+
+</html>

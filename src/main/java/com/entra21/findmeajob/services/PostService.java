@@ -30,7 +30,9 @@ public class PostService {
 
 	public void publicar(Post post, Integer idUsuario, ArrayList<Long> idCategorias) {
 		Optional<Usuario> usuario = ur.findById(idUsuario);
-		adicionarCategoria(post, idCategorias);
+		if (adicionarCategoria(post, idCategorias) == null) {
+			
+		}
 		post.setDataPublicacao(Instant.now());
 		post.setUsuario(usuario.get());
 
@@ -85,21 +87,10 @@ public class PostService {
 	}
 
 	private Post editarCategoria(Post post, ArrayList<Long> idCategorias) {
-		Integer count = 0;
 		List<Categoria> categorias = new ArrayList<>();
 		for (int i = 0; i < idCategorias.size(); i++) {
 			Optional<Categoria> optCategoria = cr.findById(idCategorias.get(i));
 			categorias.add(optCategoria.get());
-		}
-		for (int i = 0; i < post.getCategorias().size(); i++) {
-			if (post.getCategorias().contains(categorias.get(i))) {
-				count++;
-			}
-			if (count == 2) {
-				return post;
-			} else {
-				post.getCategorias().clear();
-			}
 		}
 		for (Categoria categoria : categorias) {
 			post.getCategorias().add(categoria);

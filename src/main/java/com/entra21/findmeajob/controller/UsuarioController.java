@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,25 +17,34 @@ import com.entra21.findmeajob.models.Usuario;
 import com.entra21.findmeajob.services.UsuarioService;
 
 @Controller
+@RequestMapping("/usuarios")
 public class UsuarioController {
 
 	@Autowired
 	private UsuarioService us;
 
-	// Redireciona para a pagina de cadastro
-	@GetMapping(value = "/cadastrarUsuario")
+	@GetMapping("/cadastrarUsuario")
 	public String cadastrarUsuario() {
-		return "usuario/cadastrarUsuario";
+		return "usuario/home";
 	}
 
-	// Cadastra o usuario no banco de dados
-	@PostMapping(value = "/cadastrarUsuario")
-	public String cadastrarUsuario(Usuario usuario) {
+	@PostMapping("/cadastrarUsuario")
+	public String cadastrarUsuario(Usuario usuario, Model model) {
+		if (us.findByEmail(usuario.getEmail()) != null) {
+			model.addAttribute("emailCadastrado", "O email informado ja está cadastrado!");
+			return "usuario/home";
+		}
+		
 		us.cadastrar(usuario);
-		return "redirect:/cadastrarUsuario";
+		
+		return "redirect:/usuario/editarPerfil";
+	}
+	
+	@GetMapping("/login")
+	public String login() {
+		return "usuario/login";
 	}
 
-	// Mostra uma lista com todos os usuarios cadastrados
 	@GetMapping(value = "/listaUsuarios")
 	public ResponseEntity<List<Usuario>> listaUsuarios() {
 		List<Usuario> usuarios = us.listaUsuarios();
@@ -44,7 +55,7 @@ public class UsuarioController {
 	public String deletarUsuario(Integer id) {
 		us.deletar(id);
 
-		return "redirect:/cadastrarUsuario";
+		return "redirect:/usuario/home";
 	}
 	
 	@GetMapping(value = "/perfilUsuario/{id}")
@@ -68,5 +79,20 @@ public class UsuarioController {
 		return "redirect:/listaUsuarios";
 	}
 	
-
+	@GetMapping("/index")
+	public String index(@CurrentSecurityContext(expression = "authentication.name") String email) {
+		Usuario usuario = us.encontrarPorEmail(email);
+		
+		String redirectURL = "";
+		
+		if (us.temAutorizacao(usuario, "USUARIO")){
+			redirectURL = "usuario/home";
+		}
+		if (us.temAutorizacao(usuario, "ADMIN")) {
+			redirectURL = "admin/listaUsuariosAdmin";
+		}
+		return redirectURL;
+		
+	}
+	
 }

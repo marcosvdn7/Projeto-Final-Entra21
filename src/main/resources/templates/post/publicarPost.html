@@ -7,19 +7,58 @@
 </head>
 <body>
 
+		<script type="text/javascript">
+		(function(){
+			"use strict";
+		
+			var marcados = 0;
+			var verifyCheckeds = function($checks) {
+				if( marcados>=2 ) {
+					loop($checks, function($element) {
+						$element.disabled = $element.checked ? '' : 'disabled';
+					});
+				} else {
+					loop($checks, function($element) {
+						$element.disabled = '';
+					});
+				}
+			};
+			var loop = function($elements, cb) {
+				var max = $elements.length;
+				while(max--) {
+					cb($elements[max]);
+				}
+			}
+			var count = function($element) {
+				return $element.checked ? marcados + 1 : marcados - 1;
+			}
+			window.onload = function(){
+				var $checks = document.querySelectorAll('input[type="checkbox"]');
+				loop($checks, function($element) {
+					$element.onclick = function(){
+						marcados = count(this);
+						verifyCheckeds($checks);
+					}
+					if($element.checked) marcados = marcados + 1;
+				});
+				verifyCheckeds($checks);
+			}
+		}());
+		</script>
+
 		<form method = "post">
 		
 			Titulo<input type = "text" value = "" name = "titulo">
 			<div class = "row"></div>
 			Conteudo<input type = "text" value = "" name = "conteudo">
 			<div class = "row"></div>
-			Categorias<div th:each = "categoria, itemStat : ${categorias}">
+			Categorias<div th:each = "categoria : ${categorias}">
 						<label th:for = "${categoria.nomeCategoria}">
-							<input th:type = "checkbox" th:text = "${categoria.nomeCategoria}" th:value = "${categoria.idCategoria}" th:name = "idCategorias">
+							<input th:type = "checkbox" class = "limited" th:text = "${categoria.nomeCategoria}" th:value = "${categoria.idCategoria}" name = "chk" th:name = "idCategorias"  onclick = "return myfun()">
 						</label>
 						</div>
 			<button type = "submit">Publicar</button>
 		</form>
-
+		
 </body>
 </html>

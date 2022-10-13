@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.entra21.findmeajob.models.Usuario;
@@ -16,6 +16,9 @@ public class UsuarioService {
 
 	@Autowired
 	private UsuarioRepository ur;
+	
+	@Autowired
+	private BCryptPasswordEncoder criptografia;
 
 	public Usuario findById(Integer id) {
 		Optional<Usuario> obj = ur.findById(id);
@@ -23,18 +26,19 @@ public class UsuarioService {
 		return obj.get();
 	}
 
-	public String cadastrar(Usuario usuario) {
-		try {
-		usuario.setDataCadastro(Instant.now());
-		ur.save(usuario);
-		
-		} catch (DataIntegrityViolationException e) {
-			return "redirect:/listaUsuarios";
-		}
-		return "redirect:/cadastrarUsuario";
+	public Usuario findByEmail(String email) {
+		return ur.findByEmail(email);
 	}
 
-	//lista todos os usuarios cadastrados no banco de dados
+	public Usuario cadastrar(Usuario usuario) {
+		usuario.setDataCadastro(Instant.now());
+		String senhaCriptografada = criptografia.encode(usuario.getSenha());
+		usuario.setSenha(senhaCriptografada);
+
+		return ur.save(usuario);
+	}
+
+	// lista todos os usuarios cadastrados no banco de dados
 	public List<Usuario> listaUsuarios() {
 		return ur.findAll();
 	}
@@ -57,6 +61,17 @@ public class UsuarioService {
 		atualizarDados(optUsuario.get(), usuarioEditado);
 
 		return ur.save(optUsuario.get());
+	}
+
+	public Usuario encontrarPorEmail(String email) {
+		return ur.findByEmail(email);
+	}
+
+	public boolean temAutorizacao(Usuario usuario, String permissaoUsuario) {
+		if (usuario.getPermissaoUsuario().equals(permissaoUsuario)) {
+			return true;
+		}
+		return false;
 	}
 
 	private void atualizarDados(Usuario usuario, Usuario usuarioEditado) {

@@ -8,6 +8,8 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,8 +43,9 @@ public class Usuario {
 	@Column(name = "DATA_CADASTRO")
 	private Instant dataCadastro;
 
+	@Enumerated(EnumType.STRING)
 	@Column(name = "PERMISSAO_USUARIO")
-	private Integer permissaoUsuario;
+	private PermissaoUsuario permissaoUsuario;
 	
 	@ManyToOne
 	@JoinColumn(name = "cep")
@@ -53,7 +56,7 @@ public class Usuario {
 	private List<Post> posts = new ArrayList<>();
 
 	public Usuario() {
-		this.permissaoUsuario = 1;
+		this.permissaoUsuario = PermissaoUsuario.USUARIO;
 	}
 
 	public Integer getUserId() {
@@ -116,14 +119,12 @@ public class Usuario {
 		this.endereco = endereco;
 	}
 
-	public PermissaoUsuario getPermissaoUsuario() {
-		return PermissaoUsuario.valueOf(this.permissaoUsuario);
+	public String getPermissaoUsuario() {
+		return permissaoUsuario.name();
 	}
 
 	public void setPermissaoUsuario(PermissaoUsuario permissaoUsuario) {
-		if (permissaoUsuario != null) {
-			this.permissaoUsuario = permissaoUsuario.getCodigo();
-		}
+		this.permissaoUsuario = permissaoUsuario;
 	}
 	
 

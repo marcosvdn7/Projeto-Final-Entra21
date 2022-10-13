@@ -9,8 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.entra21.findmeajob.models.Categoria;
 import com.entra21.findmeajob.models.Post;
@@ -18,6 +20,7 @@ import com.entra21.findmeajob.repository.CategoriaRepository;
 import com.entra21.findmeajob.services.PostService;
 
 @Controller
+@RequestMapping("/publicacoes")
 public class PostController {
 	
 	@Autowired
@@ -37,7 +40,9 @@ public class PostController {
 	
 	//FAZ A PUBLICAÇÂO
 	@PostMapping(value = "/{idUsuario}/publicarPost")
-	public String criarPublicacao(Post post, @PathVariable Integer idUsuario,@RequestParam("idCategorias") ArrayList<Long> idCategorias) {
+	public String criarPublicacao(Post post, @PathVariable Integer idUsuario,
+								  @RequestParam("idCategorias") ArrayList<Long> idCategorias,
+								  RedirectAttributes attributes) {
 		ps.publicar(post, idUsuario, idCategorias);
 		
 		return "redirect:/" +idUsuario+ "/publicarPost";
