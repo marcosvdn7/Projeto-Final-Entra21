@@ -52,7 +52,7 @@ public class PostController {
 	//NO BANCO DE DADOS
 	@GetMapping(value = "/listaPosts")
 	public ResponseEntity<ArrayList<Post>> listaPost() {
-		ArrayList<Post> posts = ps.listar();
+		ArrayList<Post> posts = ps.listarTodos();
 		
 		return ResponseEntity.ok().body(posts);		
 	}

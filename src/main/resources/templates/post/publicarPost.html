@@ -46,7 +46,7 @@
 		}());
 		</script>
 
-		<form method = "post">
+		<form th:object = "${post}" th:action = "publicarPost" method = "post">
 		
 			Titulo<input type = "text" value = "" name = "titulo">
 			<div class = "row"></div>

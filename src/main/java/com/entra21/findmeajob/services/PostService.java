@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.entra21.findmeajob.models.Categoria;
+import com.entra21.findmeajob.models.Endereco;
 import com.entra21.findmeajob.models.Post;
 import com.entra21.findmeajob.models.Usuario;
 import com.entra21.findmeajob.repository.CategoriaRepository;
+import com.entra21.findmeajob.repository.EnderecoRepository;
 import com.entra21.findmeajob.repository.PostRepository;
 import com.entra21.findmeajob.repository.UsuarioRepository;
 
@@ -27,6 +29,9 @@ public class PostService {
 
 	@Autowired
 	private CategoriaRepository cr;
+	
+	@Autowired
+	private EnderecoRepository er;
 
 	public void publicar(Post post, Integer idUsuario, ArrayList<Long> idCategorias) {
 		Optional<Usuario> usuario = ur.findById(idUsuario);
@@ -45,7 +50,7 @@ public class PostService {
 		return obj.get();
 	}
 
-	public ArrayList<Post> listar() {
+	public ArrayList<Post> listarTodos() {
 		return (ArrayList<Post>) pr.findAll();
 	}
 
@@ -111,6 +116,35 @@ public class PostService {
 		List<Post> posts = pr.findByUsuario(optUsuario.get());
 		
 		return posts;		
+	}
+	
+	public List<Post> publicacoesRecentes(){
+		List<Post> posts = pr.findAll();
+		List<Post> publicacoesRecentes = new ArrayList<>();
+		
+		for (int i = 1; i < posts.size(); i++) {
+			publicacoesRecentes.add(posts.get(posts.size() - i));
+			
+			if(i == 6) {
+				break;
+			}
+		}
+		
+		return publicacoesRecentes;
+	}
+	
+	public List<Post> buscarPorEndereco(Long idEndereco){
+		List<Post> posts = pr.findAll();
+		Optional<Endereco> endereco = er.findById(idEndereco);
+		List<Post> postsE = new ArrayList<>();
+		
+		for (Post post : posts) {
+			if (post.getUsuario().getEndereco().getCidade().equals(endereco.get().getCidade())) {
+				postsE.add(post);
+			}
+		}
+		
+		return postsE;
 	}
 
 }

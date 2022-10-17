@@ -25,19 +25,19 @@ public class UsuarioController {
 
 	@GetMapping("/cadastrarUsuario")
 	public String cadastrarUsuario() {
-		return "usuario/home";
+		return "usuario/cadastrarUsuario";
 	}
 
 	@PostMapping("/cadastrarUsuario")
 	public String cadastrarUsuario(Usuario usuario, Model model) {
 		if (us.findByEmail(usuario.getEmail()) != null) {
 			model.addAttribute("emailCadastrado", "O email informado ja está cadastrado!");
-			return "usuario/home";
+			return "usuario/cadastrarUsuario";
 		}
 		
 		us.cadastrar(usuario);
 		
-		return "redirect:/usuario/editarPerfil";
+		return "redirect:/usuario/home";
 	}
 	
 	@GetMapping("/login")

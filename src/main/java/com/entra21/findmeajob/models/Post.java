@@ -37,7 +37,9 @@ public class Post {
 	private Usuario usuario;
 
 	@ManyToMany
-	@JoinTable(name = "post_categoria", joinColumns = @JoinColumn(name = "id_post"), inverseJoinColumns = @JoinColumn(name = "id_categoria"))
+	@JoinTable(name = "post_categoria", 
+			   joinColumns = @JoinColumn(name = "id_post"), 
+			   inverseJoinColumns = @JoinColumn(name = "id_categoria"))
 	private List<Categoria> categorias = new ArrayList<>();
 
 	public Post() {
@@ -115,7 +117,7 @@ public class Post {
 		Post other = (Post) obj;
 		return Objects.equals(idPublicacao, other.idPublicacao);
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Publicacao [idPublicacao=" + idPublicacao + ", titulo=" + titulo + ", dataPublicacao=" + dataPublicacao

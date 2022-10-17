@@ -47,8 +47,9 @@ public class Usuario {
 	@Column(name = "PERMISSAO_USUARIO")
 	private PermissaoUsuario permissaoUsuario;
 	
+	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name = "cep")
+	@JoinColumn(name = "id_endereco")
 	private Endereco endereco;
 
 	@JsonIgnore

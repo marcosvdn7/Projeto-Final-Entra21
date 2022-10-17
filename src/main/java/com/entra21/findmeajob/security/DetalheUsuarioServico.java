@@ -28,7 +28,7 @@ public class DetalheUsuarioServico implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String email) {
-		Usuario usuario = usuarioRepository.findByEmail(null);
+		Usuario usuario = usuarioRepository.findByEmail(email);
 		Set<GrantedAuthority> permissoes = new HashSet<>();
 		if (usuario != null) {
 			GrantedAuthority permissao = new SimpleGrantedAuthority(usuario.getPermissaoUsuario());
