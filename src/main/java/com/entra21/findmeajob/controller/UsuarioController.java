@@ -23,21 +23,21 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioService us;
 
-	@GetMapping("/cadastrarUsuario")
-	public String cadastrarUsuario() {
-		return "usuario/cadastrarUsuario";
+	@GetMapping("/signUp")
+	public String signUp() {
+		return "usuario/cadastro";
 	}
 
-	@PostMapping("/cadastrarUsuario")
-	public String cadastrarUsuario(Usuario usuario, Model model) {
+	@PostMapping("/signUp")
+	public String signUp(Usuario usuario, Model model) {
 		if (us.findByEmail(usuario.getEmail()) != null) {
 			model.addAttribute("emailCadastrado", "O email informado ja está cadastrado!");
-			return "usuario/cadastrarUsuario";
+			return "redirect:/usuario/cadastro";
 		}
 		
 		us.cadastrar(usuario);
 		
-		return "redirect:/usuario/home";
+		return "redirect:/home";
 	}
 	
 	@GetMapping("/login")

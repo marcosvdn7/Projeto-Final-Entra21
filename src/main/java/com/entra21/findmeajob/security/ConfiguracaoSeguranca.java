@@ -44,7 +44,7 @@ public class ConfiguracaoSeguranca extends WebSecurityConfigurerAdapter {
 		.and().exceptionHandling().accessDeniedPage("/auth/auth-acesso-negado")
 		.and()
 		.formLogin().successHandler(loginSucesso)
-		.loginPage("/login").permitAll()
+		.loginPage("/usuario/login").permitAll()
 		.and()
 		.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 		.logoutSuccessUrl("/").permitAll();
