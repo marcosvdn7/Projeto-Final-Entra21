@@ -128,6 +128,13 @@ public class Usuario {
 		this.permissaoUsuario = permissaoUsuario;
 	}
 	
+	public List<PermissaoUsuario> getPermissoesUsuario(){
+		List<PermissaoUsuario> permissoes = new ArrayList<>();
+		permissoes.add(permissaoUsuario);
+		
+		return permissoes;
+	}
+	
 
 	@Override
 	public int hashCode() {

@@ -29,13 +29,9 @@ public class DetalheUsuarioServico implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String email) {
 		Usuario usuario = usuarioRepository.findByEmail(email);
-		Set<GrantedAuthority> permissoes = new HashSet<>();
 		if (usuario != null) {
-			GrantedAuthority permissao = new SimpleGrantedAuthority(usuario.getPermissaoUsuario());
-			permissoes.add(permissao);
-			User user = new User(usuario.getEmail(), usuario.getSenha(), permissoes);
-			
-			return user;
+			DetalheUsuario detalheUsuario = new DetalheUsuario(usuario);
+			return detalheUsuario;
 		} else {
 			throw new UsernameNotFoundException("Email nao cadastrado");
 		}

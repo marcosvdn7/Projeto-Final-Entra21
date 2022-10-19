@@ -65,32 +65,24 @@
 								  </div>
 							  </form>
 							</div>
-							<div class="modal-footer">
-							  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-							  <button type="button" class="btn btn-primary">Publicar Postagem</button>
-							</div>
-						  </div>
-						</div>
-					  </div>
-                </li>
+                           <div class="modal-footer">
+                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                             <button type="button" class="btn btn-primary">Publicar Postagem</button>
+                           </div>
+                          </div>
+                        </div>
+                       </div>
+                      </li>
                 <li>
-                    <a href="#">Sair do Site</a>
+                    <a href="/logout">Sair do Site</a>
                 </li>
 	            </ul>
 	          </li>
 	          <li>
-              <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pesquisa</a>
-              
-      						 	<!-- FOR EACH DE CATEGORIAS -->
-	              <ul th:each = "categoria : ${categorias}" class = "collapse list-unstyled" id = "pageSubmenu">
-	                <li>
-	                    <td><a th:text = "${categoria.nomeCategoria}"></a></td>
-	                </li>
-	              </ul>
-	              <!-- ACABA FOR EACH -->
-	              
-		          </li>
-		        </ul>
+              <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" >Pesquisa</a>
+               
+	          </li>
+	        </ul>
 
 	        <div class="footer">
 	        	<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->

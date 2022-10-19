@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -94,9 +95,11 @@ public class PostController {
 	}
 	
 	@GetMapping(value = "/posts/{idCategoria}")
-	public ResponseEntity<List<Post>> listarPorCategoria(@PathVariable Long idCategoria) {
+	public ModelAndView listarPorCategoria(@PathVariable Long idCategoria) {
+		ModelAndView mv = new ModelAndView("post/publicacoes/");
 		List<Post> posts = ps.listarPorCategoria(idCategoria);
-		return ResponseEntity.ok().body(posts);
+		mv.addObject("posts", posts);
+		return mv;
 	}
 	
 	@GetMapping(value = "/perfil/{idUsuario}")

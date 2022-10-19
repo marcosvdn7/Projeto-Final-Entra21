@@ -7,11 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.entra21.findmeajob.models.Categoria;
 import com.entra21.findmeajob.services.CategoriaService;
 
 @Controller
+@RequestMapping("/categorias")
 public class CategoriaController {
 	
 	@Autowired
@@ -24,11 +27,13 @@ public class CategoriaController {
 		return ResponseEntity.ok().body(categoria);
 	}
 	
-	@GetMapping(value = "/categorias")
-	public ResponseEntity<List<Categoria>> listarCategorias(){
+	@GetMapping(value = "/listarCategorias")
+	public ModelAndView listarCategorias(){
+		ModelAndView mv = new ModelAndView("usuario/testeListaCategorias");
 		List<Categoria> categorias = cs.listar();
+		mv.addObject("categorias", categorias);
 		
-		return ResponseEntity.ok().body(categorias);
+		return mv;
 	}
 	
 	

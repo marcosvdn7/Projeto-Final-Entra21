@@ -35,20 +35,25 @@ public class ConfiguracaoSeguranca extends WebSecurityConfigurerAdapter {
 		return detalheDoUsuario;
 	}
 	
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-		.antMatchers("/").permitAll()
-		.antMatchers("/usuario/*").hasAnyAuthority("USUARIO", "ADMIN")
-		.antMatchers("/admin/*").hasAnyAuthority("ADMIN")
-		.and().exceptionHandling().accessDeniedPage("/auth/auth-acesso-negado")
-		.and()
-		.formLogin().successHandler(loginSucesso)
-		.loginPage("/usuario/login").permitAll()
-		.and()
-		.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-		.logoutSuccessUrl("/").permitAll();
-	}
+	
+	//- Configuração das permissões, aqui seleciona quais são as request com os papeis de usuários
+    @Override
+    protected void configure(HttpSecurity http) throws Exception{
+        http.authorizeRequests()
+        .antMatchers("/").permitAll()
+        .antMatchers("/usuario/*").hasAnyAuthority("USUARIO","ADMIN")
+        .antMatchers("/admin/*").hasAnyAuthority("ADMIN")
+        .and()
+        .exceptionHandling().accessDeniedPage("/auth/auth-acesso-negado")
+        .and()
+        .formLogin().successHandler(loginSucesso) //o spring entende que o login foi um sucesso, criando as views e jogando o usuario pra pagina correta
+        .loginPage("/login").permitAll()
+        .and()
+        .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+        .logoutSuccessUrl("/usuarios/login").permitAll();
+        
+        
+    }
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
