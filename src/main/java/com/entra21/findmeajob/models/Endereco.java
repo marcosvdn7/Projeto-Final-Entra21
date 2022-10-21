@@ -21,11 +21,18 @@ public class Endereco {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String cidade;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "endereco")
 	private List<Usuario> usuarios = new ArrayList<>();
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getCidade() {
 		return cidade;

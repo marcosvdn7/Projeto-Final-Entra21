@@ -8,6 +8,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.entra21.findmeajob.models.Endereco;
+import com.entra21.findmeajob.models.Post;
 import com.entra21.findmeajob.models.Usuario;
 import com.entra21.findmeajob.models.enums.PermissaoUsuario;
 
@@ -68,6 +70,26 @@ public class DetalheUsuario implements UserDetails {
 	
 	public Integer getIdUsuarioLogado() {
 		return usuario.getUserId();
+	}
+	
+	public String getFotoPerfil() {
+		return this.usuario.getFotoPerfil();
+	}
+	
+	public Endereco getEndereco() {
+		return this.usuario.getEndereco();
+	}
+	
+	public String getCidade() {
+		return this.usuario.getEndereco().getCidade();
+	}
+	
+	public List<Post> getPublicacoes(){
+		return this.usuario.getPosts();
+	}
+	
+	public String getEmail() {
+		return this.usuario.getEmail();
 	}
 
 }

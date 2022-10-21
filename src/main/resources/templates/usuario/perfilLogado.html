@@ -148,7 +148,7 @@
                           <!-- END profile-header-img -->
                           <!-- BEGIN profile-header-info -->
                           <div class="profile-header-info">
-                             <h4 class="m-t-10 m-b-5" th:text = "${principal.getNome}"></h4>
+                             <h4 class="m-t-10 m-b-5" th:text = "${detalheUsuario.getNome}"></h4>
                              <p class="m-b-10">Cargo Escolhido</p>
                                  <!-- Botão para acionar modal -->
                                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalExemplo">
@@ -167,10 +167,10 @@
                                          </div>
                                          <div class="modal-body">
                                              <div class="contato">
-                                                 <p>Email@foda.com</p>
+                                                 <p th:text = "${detalheUsuario.getEmail}"></p>
                                              </div>
                                              <div class="contato">
-                                                 <p>numero47foda</p>
+                                                 <p>(47) 9 9718-0917</p>
                                              </div>
      
                                          </div>
@@ -196,22 +196,21 @@
                              <li>
      
                                 <!-- begin timeline-body -->
+                                
                                 <div class="timeline-body">
                                    <div class="timeline-header">
                                       <span class="userimage"><img src="images/marcao.jpg" alt=""></span>
-                                      <span class="username">Nome Sobrenome</span><br>
+                                      <span class="username" th:text = "${detalheUsuario.getNome}"></span><br>
                                       <small>Trabalho escolhido</small>
      
+                                  
+                                   <div class="timeline-content" >
+                                      <p th:text = "${publicacao.getConteudo}"></p>
                                    </div>
                                    <div class="timeline-content">
-                                      <p>
-                                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc faucibus turpis quis tincidunt luctus.
-                                         Nam sagittis dui in nunc consequat, in imperdiet nunc sagittis.
-                                      </p>
-                                   </div>
-                                   <div class="timeline-content">
-                                    <p>Localização: Gaspar</p>
+                                    <p th:text = "${detalheUsuario.getCidade}"></p>
                                  </div>
+                                </div>
                                 </div>
                                 <!-- end timeline-body -->
                              </li>

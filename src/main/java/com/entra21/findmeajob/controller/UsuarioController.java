@@ -4,10 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.entra21.findmeajob.models.Post;
 import com.entra21.findmeajob.models.Usuario;
 import com.entra21.findmeajob.security.DetalheUsuario;
 import com.entra21.findmeajob.services.UsuarioService;
@@ -23,9 +23,6 @@ import com.entra21.findmeajob.services.UsuarioService;
 @Controller
 @RequestMapping("/usuarios")
 public class UsuarioController {
-
-	
-	private Usuario usuario = new Usuario();
 
 	@Autowired
 	private UsuarioService us;
@@ -65,14 +62,27 @@ public class UsuarioController {
 		return "redirect:/usuario/home";
 	}
 
-	@GetMapping(value = "/perfilUsuario/{id}")
-	public ModelAndView perfilUsuario(@AuthenticationPrincipal DetalheUsuario detalheUsuario,
-			@PathVariable Integer id) {
-		ModelAndView mv = new ModelAndView("usuario/perfilUsuario");
-		Usuario usuario = us.findById(id);
-		mv.addObject("usuario", usuario);
-		mv.addObject("usuarioLogado", this.usuario);
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//	@GetMapping(value = "/perfilUsuario/{id}")
+//	public ModelAndView perfilUsuario(@PathVariable Integer id) {
+//		ModelAndView mv = new ModelAndView("usuario/perfilUsuario");
+//		Usuario usuario = us.findById(id);
+//		mv.addObject("usuario", usuario);
+////		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		return mv;
+//	}
+	
+	@GetMapping(value = "/perfilUsuario/meuPerfil")
+	public ModelAndView perfilUsuarioLogado() {
+		ModelAndView mv = new ModelAndView("usuario/perfilLogado");
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (principal instanceof UserDetails) {
+			DetalheUsuario detalheUsuario = (DetalheUsuario)principal;
+			List<Post> publicacoes = detalheUsuario.getPublicacoes();
+			mv.addObject("publicacoes", publicacoes);
+			mv.addObject("detalheUsuario", detalheUsuario);
+		} else {
+			throw new RuntimeException("Erro ao tentar recuperar informaçoes do usuario logado");
+		}
 		return mv;
 	}
 
@@ -80,7 +90,6 @@ public class UsuarioController {
 	public ModelAndView editarPerfil(@PathVariable Integer id) {
 		ModelAndView mv = new ModelAndView("usuario/editarPerfil");
 		mv.addObject("usuario", us.findById(id));
-		mv.addObject("usuarioLogado", this.usuario);
 
 		return mv;
 	}
@@ -95,13 +104,13 @@ public class UsuarioController {
 	public String index(@CurrentSecurityContext(expression = "authentication.name") String email) {
 
 		// Em seguida, iniciamos um usuario para buscar o email do mesmo no banco
-		this.usuario = us.findByEmail(email);
+		Usuario usuario = us.findByEmail(email);
 
 		// String vazia para inserir a url que ele será levado, baseado no seu papel
 		String redirectURL = "";
-		if (us.temAutorizacao(this.usuario, "USUARIO")) {
+		if (us.temAutorizacao(usuario, "USUARIO")) {
 			redirectURL = "/home";
-		} else if (us.temAutorizacao(this.usuario, "ADMIN")) {
+		} else if (us.temAutorizacao(usuario, "ADMIN")) {
 			redirectURL = "admin/listaUsuariosAdmin";
 		}
 		return redirectURL;

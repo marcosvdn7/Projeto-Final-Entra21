@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,17 +45,20 @@ public class Usuario {
 	@Column(name = "DATA_CADASTRO")
 	private Instant dataCadastro;
 
+	@Column(name = "FOTO_PERFIL")
+	private String fotoPerfil;
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "PERMISSAO_USUARIO")
 	private PermissaoUsuario permissaoUsuario;
-	
+
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "id_endereco")
 	private Endereco endereco;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "usuario")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<Post> posts = new ArrayList<>();
 
 	public Usuario() {
@@ -111,7 +116,7 @@ public class Usuario {
 	public List<Post> getPosts() {
 		return posts;
 	}
-	
+
 	public Endereco getEndereco() {
 		return endereco;
 	}
@@ -127,14 +132,21 @@ public class Usuario {
 	public void setPermissaoUsuario(PermissaoUsuario permissaoUsuario) {
 		this.permissaoUsuario = permissaoUsuario;
 	}
-	
-	public List<PermissaoUsuario> getPermissoesUsuario(){
+
+	public List<PermissaoUsuario> getPermissoesUsuario() {
 		List<PermissaoUsuario> permissoes = new ArrayList<>();
 		permissoes.add(permissaoUsuario);
-		
+
 		return permissoes;
 	}
-	
+
+	public String getFotoPerfil() {
+		return fotoPerfil;
+	}
+
+	public void setFotoPerfil(String fotoPerfil) {
+		this.fotoPerfil = fotoPerfil;
+	}
 
 	@Override
 	public int hashCode() {
